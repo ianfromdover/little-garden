@@ -5,3 +5,7 @@ A little garden for my home in VRChat
 
 // screenshot coming soon
 // udon functionality coming soon
+
+### Asset Credits
+- Tree, LeafRustle and Wind from Flooded Grounds asset on UnityAssetStore
+
