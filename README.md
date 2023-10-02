@@ -3,7 +3,8 @@ A little garden for my home in VRChat
 
 **Version** Unity 2019.4.31f1
 
-// screenshot coming soon
+![Preview](./Docs/v1.png)
+
 // udon functionality coming soon
 
 ### Asset Credits
