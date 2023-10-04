@@ -38,7 +38,7 @@ namespace _littleGarden.ScriptsU
         private VRCPlayerApi playerApi; // the local player
         
         // for calculate whether to pull closer or push further
-        [SerializeField] private TelekState telekState = TelekState.FREE;
+        [SerializeField] private bool isGrabbing = false; // aka free state
         private float initialObjDist;
         private float currObjDist;
         private Transform currTrf; // ref to obj
@@ -49,11 +49,6 @@ namespace _littleGarden.ScriptsU
         private float freqCounter = 0;
         private bool isInEditor;
 
-        enum TelekState
-        {
-            FREE,
-            GRABBING,
-        }
         /*
         private void Start()
         {
@@ -63,7 +58,7 @@ namespace _littleGarden.ScriptsU
         private void Update()
         {
             // PlayerApi data will only be valid in game so we don't run the update if we're in editor
-            if (isInEditor || telekState == TelekState.GRABBING)
+            if (isInEditor || isGrabbing)
                 return;
             
             // timer to reduce raycast shots for performance
@@ -72,7 +67,7 @@ namespace _littleGarden.ScriptsU
                 return;
 
             freqCounter = 0;
-            if (telekState == TelekState.FREE && !raycastFindObj())
+            if (!raycastFindObj()) // hand is free and no item found
                 return;
             
             DrawSelection();
@@ -80,7 +75,7 @@ namespace _littleGarden.ScriptsU
 
         private void FixedUpdate()
         {
-            if (telekState != TelekState.GRABBING)
+            if (!isGrabbing)
                 return;
             CalcTarget();
             Move();
@@ -98,7 +93,7 @@ namespace _littleGarden.ScriptsU
             rb = currTrf.GetComponent<Rigidbody>();
             targetPos = currTrf.position;
             initialObjDist = hit.distance;
-            telekState = TelekState.GRABBING;
+            isGrabbing = true;
             if (rb == null)
                 Debug.LogError($"HandTelekinesis: No RigidBody on " +
                                $"pickup {currTrf.gameObject.name} found! Moving will break");
@@ -129,7 +124,7 @@ namespace _littleGarden.ScriptsU
         // wire this to trigger when grabbing hand releases (event driven)
         private void Release()
         {
-            telekState = TelekState.FREE;
+            isGrabbing = false;
             currTrf = null;
             targetPos = Vector3.zero; // does this cause bugs?
             initialObjDist = 0f;
